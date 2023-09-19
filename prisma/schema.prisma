@@ -1,0 +1,144 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
+    // Further reading:
+    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
+    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
+    url      = env("DATABASE_URL")
+}
+
+model NowPlaying {
+    id            String    @id @default(cuid())
+    title         String
+    type          String
+    backdrop      String?
+    overview      String?
+    firstReleased DateTime?
+    poster        String?
+    tmdbId        String
+}
+
+model Trending {
+    id            String    @id @default(cuid())
+    title         String
+    type          String
+    backdrop      String?
+    overview      String?
+    firstReleased DateTime?
+    poster        String?
+    tmdbId        String
+}
+
+// Necessary for Next auth
+model Account {
+    id                String  @id @default(cuid())
+    userId            String
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String? // @db.Text
+    access_token      String? // @db.Text
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String? // @db.Text
+    session_state     String?
+    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([provider, providerAccountId])
+}
+
+model Session {
+    id           String   @id @default(cuid())
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+    id             String    @id @default(cuid())
+    name           String    @unique
+    email          String?   @unique
+    emailVerified  DateTime?
+    image          String?
+    hashedPassword String?
+    accounts       Account[]
+    sessions       Session[]
+    Watch          Watch[]
+    Lists          List[]
+}
+
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+}
+
+model Media {
+    id                 String    @id @default(cuid())
+    name               String    @db.VarChar(255)
+    type               String
+    creator            String?
+    crew               String?
+    cast               String?
+    backdrop           String?
+    overview           String?
+    last_released      DateTime?
+    first_released     DateTime
+    runtime            Int?
+    number_of_episodes Int?
+    number_of_seasons  Int?
+    poster             String?
+    tagline            String
+    tmdbId             String    @unique
+    Review             Review[]
+    Watch              Watch[]
+    List               List?     @relation(fields: [listId], references: [id])
+    listId             String?
+}
+
+model Watch {
+    id           String    @id @default(cuid())
+    userId       String
+    dateStarted  DateTime?
+    dateFinished DateTime
+    type         String
+    mediaId      String
+
+    user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+    media Media @relation(fields: [mediaId], references: [tmdbId], onDelete: Cascade)
+}
+
+model List {
+    id          String   @id @default(cuid())
+    // watch, watched, liked, standard
+    type        String
+    dateCreated DateTime
+    userId      String
+    order       String[]
+    title       String
+    description String?
+    media       Media[]
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+    id          String   @id @default(cuid())
+    content     String
+    rating      Int
+    dateCreated DateTime
+    mediaId     String
+
+    media Media @relation(fields: [mediaId], references: [id])
+}
