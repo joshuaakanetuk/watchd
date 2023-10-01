@@ -40,7 +40,6 @@ export const MediaDetail = ({
             {year}
           </span>
           <div>
-            {" "}
             {type === "movie" ? `Directed` : `Created`} by {creators}
           </div>
         </div>
@@ -73,7 +72,7 @@ export const MediaDetail = ({
             ))}
           </Tabs.Content>
           <Tabs.Content className="pt-3 flex flex-row flex-wrap gap-2" value="tab2">
-          {crew?.map((member) => (
+          {crew?.slice(0, 20).map((member) => (
               <span key={member.id} className="rounded text-sm bg-[#283038] px-1 py-1 shadow">
                 {member?.name}
               </span>

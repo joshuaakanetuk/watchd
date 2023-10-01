@@ -14,7 +14,7 @@ const image = "https://image.tmdb.org/t/p/w1280";
 
 const FilmComponent = ({ film }: { film: Media }) => {
   let cast, crew;
-  const detailStyleString = film?.backdrop ? 'flex flex-row gap-4 mt-[-12rem]' : "flex flex-row gap-4 py-4"
+  const detailStyleString = film?.backdrop ? 'flex flex-row gap-4 mt-[-12rem] mx-auto max-w-5xl' : "flex flex-row gap-4 py-4 mx-auto max-w-5xl"
   if (film?.cast) {
     cast = JSON.parse(film?.cast) as Cast[];
   }
@@ -38,8 +38,10 @@ const FilmComponent = ({ film }: { film: Media }) => {
           type={"movie"}
         />
       </div>
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-3xl mt-5">
         <SectionHeader label="TOP REVIEWS" />
+        <Review />
+        <Review />
         <Review />
       </div>
     </div>

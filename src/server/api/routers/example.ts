@@ -120,8 +120,8 @@ export const exampleRouter = createTRPCRouter({
               overview: show?.overview,
               cast: JSON.stringify(show?.credits?.cast),
               crew: JSON.stringify(show?.credits?.crew),
-              creator: show?.credits?.crew
-                ?.filter((member) => member.job === "Director")
+              creator: show?.created_by
+                ?.map((item) => item.name)
                 .join(", "),
             },
           });
