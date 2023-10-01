@@ -27,7 +27,6 @@ const FilmComponent = ({ film }: { film: Media }) => {
       <div className={detailStyleString}>
         <div className="flex flex-col text-white">
           <Poster size="default" url={image + film.poster} progress={0} />
-          Add Watch
         </div>
         <MediaDetail
           title={film.name}

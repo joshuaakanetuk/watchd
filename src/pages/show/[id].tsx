@@ -22,7 +22,6 @@ const ShowComponent = ({ show }: { show: Media }) => {
         <MediaHero url={show?.backdrop}>
           <div className="flex flex-col text-white">
             <Poster size="default" url={show?.poster ?? ""} progress={0} />
-            Add Watch
           </div>
           <MediaDetail
             title={show.name}
