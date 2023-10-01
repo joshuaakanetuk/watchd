@@ -7,6 +7,7 @@ import { EmptyState } from "~/components/EmptyState/EmptyState";
 import { List } from "~/components/List/List";
 import { SectionHeader } from "~/components/SectionHeader/SectionHeader";
 import { api } from "~/utils/api";
+import { sortByIDs } from "~/utils/utils";
 
 const Lists: NextPage = () => {
   const router = useRouter();
@@ -39,7 +40,7 @@ const Lists: NextPage = () => {
                 ?.filter((item) => item?.media.length !== 0)
                 .map((list) => (
                   <div key={list.id} className="flex flex-col gap-1">
-                    <List id={list.id} items={list.media} />
+                    <List id={list.id} items={sortByIDs(list.media, list.order)} />
                     <span className="font-bold">{list.title}</span>
                     <span className="text-xs text-gray-500">
                       Created: {format(list.dateCreated, "PP")}
@@ -57,7 +58,7 @@ const Lists: NextPage = () => {
                 ?.filter((item) => item?.media.length !== 0)
                 .map((list) => (
                   <div key={list.id} className="flex flex-col gap-1">
-                    <List id={list.id} items={list.media} />
+                    <List id={list.id} items={sortByIDs(list.media, list.order)} />
                     <span className="font-bold">{list.title}</span>
                     <span className="text-xs text-gray-500">
                       Created: {format(list.dateCreated, "PP")}
