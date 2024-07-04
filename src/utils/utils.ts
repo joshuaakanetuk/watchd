@@ -1,6 +1,8 @@
 import { type Media, type Prisma } from "@prisma/client";
 import { type PopularTvShowResult, type Movie } from "tmdb-ts";
 
+const BASE_IMAGE_PREFIX = "https://image.tmdb.org/t/p/w342";
+
 /**
  * This converts the results of a movie[] of the TMDB API.
  * @param result
@@ -84,7 +86,7 @@ export function apiMovieResultsToNowPlayingModel(result: Partial<Movie>) {
   return {
     title: title ? title : "title",
     type: "film",
-    backdrop: backdrop_path ?? null,
+    backdrop: BASE_IMAGE_PREFIX + backdrop_path ?? null,
     overview: overview ?? null,
     firstReleased: release_date ? new Date(release_date) : null,
     poster: poster_path ?? null,

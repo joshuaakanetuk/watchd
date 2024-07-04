@@ -7,6 +7,7 @@ import { apiShowResultsToModel } from "~/utils/utils";
 
 // Initialize TMDB API Client
 const tmdb = new TMDB(env.TMDB_API_KEY);
+const BASE_IMAGE_PREFIX = "https://image.tmdb.org/t/p/w342";
 
 /**
  * Retrieves the latest movies showing in theatres
@@ -23,6 +24,7 @@ export default CronJob("api/queues/trending", "0 0 1 * *", async () => {
         await prisma?.trending.create({
           data: {
             ...trending,
+            poster: BASE_IMAGE_PREFIX + trending?.poster ?? ''
           },
         });
       }

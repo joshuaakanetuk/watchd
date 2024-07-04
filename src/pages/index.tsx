@@ -9,8 +9,6 @@ import { api } from "~/utils/api";
 import { Review } from "~/components/Review/Review";
 import { useSession } from "next-auth/react";
 
-const BASE_IMAGE_PREFIX = "https://image.tmdb.org/t/p/w342";
-
 export default function Home() {
   const { data: sessionData } = useSession();
   const { data: nowPlaying } = api?.example.nowPlaying.useQuery(undefined);
@@ -24,7 +22,7 @@ export default function Home() {
       </Head>
       <main className="h-full items-center bg-[#14181c]">
         {!sessionData?.user && (
-          <MediaHero url={nowPlaying?.[0]?.backdrop ?? ''}>
+          <MediaHero url={nowPlaying?.[0]?.backdrop ?? ""}>
             <div className="flex flex-col gap-y-4 ">
               <p className="text-center font-[Lora] text-3xl font-semibold text-white">
                 Seamlessly track your show and movie progress.
@@ -47,34 +45,41 @@ export default function Home() {
           <div className="mb-1 w-full">
             <SectionHeader label={"NOW PLAYING"} />
           </div>
-          <Shelf
-            items={nowPlaying
-              ?.map((item) => ({
-                url: BASE_IMAGE_PREFIX + item?.poster,
-                onClick: () =>
-                  router.push(
-                    `/${item?.type === "tv" ? "show" : "film"}/${item?.tmdbId}`
-                  ),
-              }))
-              .slice(0, 5)}
-          />
+          {nowPlaying && (
+            <Shelf
+              items={nowPlaying
+                ?.map((item) => ({
+                  url: item?.poster ?? "",
+                  onClick: () =>
+                    router.push(
+                      `/${item?.type === "tv" ? "show" : "film"}/${
+                        item?.tmdbId
+                      }`
+                    ),
+                }))
+                .slice(0, 5)}
+            />
+          )}
+
           {/* Trending TV */}
           <div className="mb-1 w-full">
             <SectionHeader label={"TRENDING TV"} />
           </div>
-          <Shelf
-            items={trending
-              ?.map((item) => ({
-                url: BASE_IMAGE_PREFIX + item?.poster,
-                onClick: () =>
-                  router.push(
-                    `/${item?.type === "show" ? "show" : "film"}/${
-                      item?.tmdbId
-                    }`
-                  ),
-              }))
-              .slice(0, 5)}
-          />
+          {trending && (
+            <Shelf
+              items={trending
+                ?.map((item) => ({
+                  url: item?.poster ?? "",
+                  onClick: () =>
+                    router.push(
+                      `/${item?.type === "show" ? "show" : "film"}/${
+                        item?.tmdbId
+                      }`
+                    ),
+                }))
+                .slice(0, 5)}
+            />
+          )}
           {!sessionData?.user && <Featurebox />}
           {/* CONTENT */}
           {/* <div className="w-full">
