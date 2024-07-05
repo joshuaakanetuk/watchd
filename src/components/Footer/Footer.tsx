@@ -83,7 +83,7 @@ export const Footer = ({ onClick }: FooterProps) => {
         </div>
         <div className="pt-8">
           <p className="text-xs leading-5 text-gray-400">
-            &copy; 2020 Your Company, Inc. All rights reserved.
+            &copy; 2024 Watchd Inc. All rights reserved.
           </p>
         </div>
       </div>
